@@ -1,0 +1,17 @@
+{
+    "name": "vcu",
+    "dockerComposeFile": "docker-compose.yaml",
+    "service": "vcu", 
+    "workspaceFolder": "/workspaces",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "stmicroelectronics.stm32-vscode-extension",
+                "ms-vscode.cpptools",
+                "marus25.cortex-debug",
+                "ms-vscode.cmake-tools"
+            ]
+        }
+    },
+    "remoteUser": "root"
+}

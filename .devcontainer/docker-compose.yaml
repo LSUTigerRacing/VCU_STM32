@@ -1,0 +1,12 @@
+services:
+  vcu:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    image: alexdbui/vcu:latest 
+    volumes:
+      - ..:/workspaces:cached
+    network_mode: host
+    privileged: true
+    stdin_open: true 
+    tty: true
