@@ -61,18 +61,18 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BRAKE_L_Pin GPIO_PIN_15
 #define BRAKE_L_GPIO_Port GPIOA
-#define GPS_PWR1_Pin GPIO_PIN_10
-#define GPS_PWR1_GPIO_Port GPIOC
-#define GPS_PWR2_Pin GPIO_PIN_11
-#define GPS_PWR2_GPIO_Port GPIOC
-#define BSE_F_Pin GPIO_PIN_12
-#define BSE_F_GPIO_Port GPIOC
 #define BSE_R_Pin GPIO_PIN_0
 #define BSE_R_GPIO_Port GPIOD
 #define MAster_Control_Pin GPIO_PIN_1
 #define MAster_Control_GPIO_Port GPIOD
-#define RTD_Button_DIGI_Pin GPIO_PIN_2
+#define RTD_Button_DIGI_Pin GPIO_PIN_7
 #define RTD_Button_DIGI_GPIO_Port GPIOD
+#define BSE_F_Pin GPIO_PIN_4
+#define BSE_F_GPIO_Port GPIOB
+#define GPS_PWR2_Pin GPIO_PIN_5
+#define GPS_PWR2_GPIO_Port GPIOB
+#define GPS_PWR1_Pin GPIO_PIN_7
+#define GPS_PWR1_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
