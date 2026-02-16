@@ -533,7 +533,17 @@ static void MX_FDCAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN FDCAN1_Init 2 */
-
+    FDCAN_FilterTypeDef canFilterConfig;
+    canFilterConfig.IdType = FDCAN_STANDARD_ID;
+    canFilterConfig.FilterIndex = 0;
+    canFilterConfig.FilterType = FDCAN_FILTER_MASK;
+    canFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+    canFilterConfig.FilterID1 = 0x11;
+    canFilterConfig.FilterID2 = 0x00;
+    canFilterConfig.RxBufferIndex = 0;
+    if(HAL_FDCAN_ConfigFilter(&hfdcan1, &canFilterConfig) != HAL_OK){
+      Error_Handler();
+    }
   /* USER CODE END FDCAN1_Init 2 */
 
 }
