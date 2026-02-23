@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "stm32h7xx_hal_gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -696,7 +697,7 @@ static void MX_SDMMC1_SD_Init(void)
   hsd1.Init.ClockDiv = 0;
   if (HAL_SD_Init(&hsd1) != HAL_OK)
   {
-    Error_Handler();
+    // Error_Handler();
   }
   /* USER CODE BEGIN SDMMC1_Init 2 */
 
@@ -1162,20 +1163,27 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_14|BRAKE_L_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|BSE_F_Pin|GPS_PWR2_Pin|GPS_PWR1_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(BRAKE_L_GPIO_Port, BRAKE_L_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, BSE_R_Pin|MAster_Control_Pin|RTD_Button_DIGI_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, BSE_F_Pin|GPS_PWR2_Pin|GPS_PWR1_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : PA14 BRAKE_L_Pin */
-  GPIO_InitStruct.Pin = GPIO_PIN_14|BRAKE_L_Pin;
+  /*Configure GPIO pins : PB0 BSE_F_Pin GPS_PWR2_Pin GPS_PWR1_Pin */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|BSE_F_Pin|GPS_PWR2_Pin|GPS_PWR1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : BRAKE_L_Pin */
+  GPIO_InitStruct.Pin = BRAKE_L_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(BRAKE_L_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : BSE_R_Pin MAster_Control_Pin RTD_Button_DIGI_Pin */
   GPIO_InitStruct.Pin = BSE_R_Pin|MAster_Control_Pin|RTD_Button_DIGI_Pin;
@@ -1183,13 +1191,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : BSE_F_Pin GPS_PWR2_Pin GPS_PWR1_Pin */
-  GPIO_InitStruct.Pin = BSE_F_Pin|GPS_PWR2_Pin|GPS_PWR1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
