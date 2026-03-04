@@ -19,6 +19,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "cmsis_os2.h"
+#include "stm32h7xx_hal_adc.h"
+#include "stm32h7xx_hal_adc_ex.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -77,7 +80,7 @@ osThreadId_t ADCTaskHandle;
 const osThreadAttr_t ADCTask_attributes = {
   .name = "ADCTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityAboveNormal3,
 };
 /* Definitions for adcSemaphore */
 osSemaphoreId_t adcSemaphoreHandle;
@@ -115,10 +118,14 @@ void StartADCTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 void CAN_TX(void);
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
+  if (hadc -> Instance == ADC1) osSemaphoreRelease(adcSemaphoreHandle);
+}
 
 /* USER CODE END 0 */
 
@@ -1255,9 +1262,14 @@ void StartDefaultTask(void *argument)
 void StartADCTask(void *argument)
 {
   /* USER CODE BEGIN StartADCTask */
+  HAL_ADCEx_MultiModeStart_DMA(&hadc1, (uint32_t*) raw, 16);
   /* Infinite loop */
   for(;;)
   {
+    if (osSemaphoreAcquire(adcSemaphoreHandle, osWaitForever) == osOK) {
+      adc1 = raw[0] & 0xFFFF;
+      adc2 = raw[0] >> 16;
+    }
     osDelay(1);
   }
   /* USER CODE END StartADCTask */
