@@ -114,7 +114,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  FRESULT res; /* FatFs function common result code*/
+    uint32_t byteswritten, bytesread; /* File write/read count */
+    uint8_t wtext[] = "STM32 FATFS works great!"; /* File write buffer*/
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -158,7 +160,14 @@ int main(void)
   MX_ADC3_Init();
   MX_SDMMC1_SD_Init();
   /* USER CODE BEGIN 2 */
-
+  if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 1) != FR_OK)
+    {
+        Error_Handler();
+    }
+  if(f_open(&SDFile, "log.csv", FA_OPEN_APPEND | FA_WRITE) != FR_OK)
+    {
+      Error_Handler();
+    }
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -204,6 +213,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    springf(logBuffer, "%lu,%d,%f\r\n", time_ms, throttle, temp);
+
+    f_write(&SDFile, logBuffer, strlen(logBuffer), &byteswritten);
   }
   /* USER CODE END 3 */
 }
