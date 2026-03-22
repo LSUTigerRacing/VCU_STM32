@@ -19,9 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "cmsis_os2.h"
-#include "stm32h7xx_hal_adc.h"
-#include "stm32h7xx_hal_adc_ex.h"
+#include "projdefs.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -82,11 +80,6 @@ const osThreadAttr_t ADCTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal3,
 };
-/* Definitions for adcSemaphore */
-osSemaphoreId_t adcSemaphoreHandle;
-const osSemaphoreAttr_t adcSemaphore_attributes = {
-  .name = "adcSemaphore"
-};
 /* USER CODE BEGIN PV */
 D2_RAM uint32_t raw[16];
 uint16_t adc1, adc2;
@@ -118,14 +111,10 @@ void StartADCTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 void CAN_TX(void);
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-  if (hadc -> Instance == ADC1) osSemaphoreRelease(adcSemaphoreHandle);
-}
 
 /* USER CODE END 0 */
 
@@ -191,10 +180,6 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
-
-  /* Create the semaphores(s) */
-  /* creation of adcSemaphore */
-  adcSemaphoreHandle = osSemaphoreNew(1, 1, &adcSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -1266,11 +1251,9 @@ void StartADCTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    if (osSemaphoreAcquire(adcSemaphoreHandle, osWaitForever) == osOK) {
-      adc1 = raw[0] & 0xFFFF;
-      adc2 = raw[0] >> 16;
-    }
-    osDelay(1);
+    adc1 = raw[0] & 0xFFFF;
+    adc2 = raw[0] >> 16;
+    vTaskDelay(1);
   }
   /* USER CODE END StartADCTask */
 }
