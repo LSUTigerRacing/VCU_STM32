@@ -6,6 +6,9 @@ services:
     image: alexdbui/vcu:latest 
     volumes:
       - ..:/workspaces:cached
+      - /dev/ttyACM0:/dev/ttyACM0
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
     network_mode: host
     privileged: true
     stdin_open: true 

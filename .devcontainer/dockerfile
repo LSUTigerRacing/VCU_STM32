@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     libnewlib-arm-none-eabi \
     openocd \
     stlink-tools \
+    libglib2.0-0 \
+    libncurses5 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
